@@ -1,0 +1,8 @@
+run = "cd server && npm start"
+modules = ["nodejs-18"]
+
+[unitTest]
+language = "javascript"
+
+[nix]
+channel = "stable-22.11"

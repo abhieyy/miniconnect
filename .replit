@@ -1,2 +1,1 @@
-run = "cd server && npm install && npm start"
-modules = ["nodejs-18"]
+run = "node server/server.js"

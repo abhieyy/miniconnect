@@ -5,6 +5,12 @@ class MiniConnectController {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 10;
         this.reconnectDelay = 3000;
+        this.volumeTimeout = null;
+        this.buttonStates = {
+            shuffle: false,
+            repeat: false,
+            like: false
+        };
         this.state = {
             isPlaying: false,
             title: 'No song playing',
@@ -16,6 +22,7 @@ class MiniConnectController {
 
         this.initializeUI();
         this.attachEventListeners();
+        this.attachKeyboardShortcuts();
         this.loadSavedServer();
     }
 
@@ -60,6 +67,7 @@ class MiniConnectController {
         this.elements.nextBtn.addEventListener('click', () => this.nextTrack());
         this.elements.prevBtn.addEventListener('click', () => this.prevTrack());
         this.elements.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
+        this.elements.volumeSlider.addEventListener('input', (e) => this.updateVolumeSliderVisual(e.target.value));
         
         // New controls
         this.elements.shuffleBtn.addEventListener('click', () => this.toggleShuffle());
@@ -69,6 +77,37 @@ class MiniConnectController {
         
         // Playlist controls
         this.elements.playPlaylistBtn.addEventListener('click', () => this.playSelectedPlaylist());
+    }
+
+    attachKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            if (!this.isConnected) return;
+            
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    this.togglePlayPause();
+                    break;
+                case 'ArrowRight':
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        this.nextTrack();
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        this.prevTrack();
+                    }
+                    break;
+                case 'KeyL':
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        this.toggleLike();
+                    }
+                    break;
+            }
+        });
     }
 
     loadSavedServer() {
@@ -305,6 +344,12 @@ class MiniConnectController {
         this.volumeTimeout = setTimeout(() => {
             this.socket.emit('volume', this.state.volume);
         }, 100);
+    }
+
+    updateVolumeSliderVisual(value) {
+        // Update visual progress on slider
+        const percentage = (value / 100) * 100;
+        this.elements.volumeSlider.style.backgroundSize = percentage + '% 100%';
     }
 
     toggleShuffle() {

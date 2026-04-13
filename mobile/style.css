@@ -29,18 +29,29 @@ body {
 .header {
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(29, 185, 84, 0.3);
     padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.header h1 {
+.header-info h1 {
     font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 15px;
+    font-weight: 800;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, #1DB954, #1ed760);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -1px;
+}
+
+.header-info .subtitle {
+    font-size: 12px;
+    color: #b3b3b3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .status-indicator {
@@ -48,7 +59,11 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 12px;
+    background: rgba(29, 185, 84, 0.1);
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(29, 185, 84, 0.2);
 }
 
 .status-dot {
@@ -81,23 +96,55 @@ body {
 /* Configuration Section */
 .config-section {
     margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    background: rgba(29, 185, 84, 0.05);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(29, 185, 84, 0.2);
 }
 
 .config-section h3 {
     font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #b3b3b3;
-    margin-bottom: 12px;
+    letter-spacing: 1.5px;
+    color: #1DB954;
+    margin-bottom: 15px;
+    font-weight: 700;
 }
 
 .input-group {
     display: flex;
     gap: 10px;
+    margin-bottom: 10px;
+}
+
+.server-input {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.server-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #1DB954;
+    box-shadow: 0 0 8px rgba(29, 185, 84, 0.2);
+}
+
+.server-input::placeholder {
+    color: #666;
+}
+
+.hint {
+    font-size: 12px;
+    color: #b3b3b3;
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 #serverInput {
@@ -165,33 +212,66 @@ body {
     transform: translateY(0);
 }
 
+.btn-play-list {
+    min-width: 50px;
+    padding: 10px 16px;
+}
+
+/* Disconnected Message */
+.disconnected-message {
+    text-align: center;
+    padding: 80px 20px;
+    color: #b3b3b3;
+    font-size: 16px;
+}
+
+.disconnected-content p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.disconnected-content .small-text {
+    font-size: 13px;
+    color: #888;
+    margin-top: 10px;
+}
+
 /* Playlist Section */
 .playlist-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(29, 185, 84, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(29, 185, 84, 0.15);
 }
 
 .playlist-section label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 13px;
     font-weight: 600;
-    color: #b3b3b3;
-    white-space: nowrap;
+    color: #1DB954;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.label-icon {
+    font-size: 16px;
+}
+
+.playlist-controls {
+    display: flex;
+    gap: 10px;
 }
 
 .playlist-select {
     flex: 1;
-    min-width: 200px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
+    border: 1px solid rgba(29, 185, 84, 0.3);
+    border-radius: 8px;
     color: #ffffff;
     font-size: 13px;
     cursor: pointer;
@@ -352,16 +432,23 @@ body {
 .control-btn.play-pause {
     background: linear-gradient(135deg, #1DB954, #1ed760);
     border-radius: 50%;
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     color: #000000;
-    box-shadow: 0 8px 30px rgba(29, 185, 84, 0.3);
+    box-shadow: 0 10px 35px rgba(29, 185, 84, 0.35);
+    position: relative;
+    overflow: hidden;
+    font-weight: 800;
 }
 
 .control-btn.play-pause:hover {
     color: #000000;
-    transform: scale(1.05);
-    box-shadow: 0 10px 40px rgba(29, 185, 84, 0.4);
+    transform: scale(1.1);
+    box-shadow: 0 14px 45px rgba(29, 185, 84, 0.45);
+}
+
+.control-btn.play-pause:active {
+    transform: scale(0.93);
 }
 
 /* Volume Section */
@@ -461,9 +548,19 @@ body {
 /* Messages */
 .disconnected-message {
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 20px;
     color: #b3b3b3;
-    font-size: 16px;
+}
+
+.disconnected-message p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.small-text {
+    font-size: 13px !important;
+    color: #888 !important;
+    margin-top: 10px;
 }
 
 .reconnect-message {

@@ -10,7 +10,10 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>MiniConnect</h1>
+            <div class="header-info">
+                <h1>🎵 MiniConnect</h1>
+                <p class="subtitle">YouTube Music Controller</p>
+            </div>
             <div class="status-indicator">
                 <div class="status-dot" id="statusDot"></div>
                 <span id="statusText">Connecting...</span>
@@ -19,34 +22,43 @@
 
         <!-- Server Configuration -->
         <div class="config-section" id="configSection">
-            <h3>Server Connection</h3>
+            <h3>📡 Server Connection</h3>
             <div class="input-group">
                 <input 
                     type="text" 
                     id="serverInput" 
-                    placeholder="Server IP (e.g., 192.168.1.100:3000)" 
+                    placeholder="e.g., 192.168.1.9:3000" 
                     value="localhost:3000"
+                    class="server-input"
                 >
                 <button id="connectBtn" class="btn-primary">Connect</button>
             </div>
+            <p class="hint">💡 Tip: Use your Replit URL for mobile data</p>
         </div>
 
         <!-- Now Playing Section -->
         <div class="now-playing" id="nowPlayingSection" style="display: none;">
             <!-- Playlist Selector -->
             <div class="playlist-section">
-                <label for="playlistSelect">Playlist:</label>
-                <select id="playlistSelect" class="playlist-select">
-                    <option value="">Select a playlist...</option>
-                </select>
-                <button id="playPlaylistBtn" class="btn-small">Play</button>
+                <label for="playlistSelect">
+                    <span class="label-icon">📋</span>
+                    Select Playlist
+                </label>
+                <div class="playlist-controls">
+                    <select id="playlistSelect" class="playlist-select">
+                        <option value="">Loading playlists...</option>
+                    </select>
+                    <button id="playPlaylistBtn" class="btn-small btn-play-list" title="Play selected playlist">
+                        ▶ Play
+                    </button>
+                </div>
             </div>
 
             <!-- Album Art Placeholder -->
-            <div class="album-art">
+            <div class="album-art" id="albumArt">
                 <svg width="100%" height="100%" viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="90" fill="none" stroke="#1DB954" stroke-width="2"/>
-                    <circle cx="100" cy="100" r="50" fill="none" stroke="#1DB954" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#1DB954" stroke-width="2" opacity="0.3"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="#1DB954" stroke-width="1" opacity="0.5"/>
                     <circle cx="100" cy="100" r="10" fill="#1DB954"/>
                     <circle cx="100" cy="100" r="6" fill="#191414"/>
                 </svg>
@@ -68,14 +80,15 @@
             </div>
 
             <!-- Playback Status -->
-            <div class="playback-status" id="playbackStatus">▶ Playing</div>
+            <div class="playback-status" id="playbackStatus">⏸ Paused</div>
 
-            <!-- Controls -->
+            <!-- Main Controls -->
             <div class="controls">
-                <button id="prevBtn" class="control-btn" title="Previous">
+                <button id="prevBtn" class="control-btn" title="Previous track">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 4h2v16H6V4zm3.5 8l8.5 6V6z"/>
                     </svg>
+                    <span class="tooltip">Prev</span>
                 </button>
 
                 <button id="playPauseBtn" class="control-btn play-pause" title="Play/Pause">
@@ -86,12 +99,14 @@
                             <rect x="24" y="8" width="6" height="32"/>
                         </g>
                     </svg>
+                    <span class="tooltip">Play</span>
                 </button>
 
-                <button id="nextBtn" class="control-btn" title="Next">
+                <button id="nextBtn" class="control-btn" title="Next track">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16 4v16h2V4h-2zm-8 8l8-6v12z"/>
                     </svg>
+                    <span class="tooltip">Next</span>
                 </button>
             </div>
 
@@ -146,7 +161,10 @@
 
         <!-- Disconnected Message -->
         <div id="disconnectedMessage" class="disconnected-message">
-            <p>Not connected to server</p>
+            <div class="disconnected-content">
+                <p>🔌 Not connected to server</p>
+                <p class="small-text">Enter your server URL above and click Connect</p>
+            </div>
         </div>
     </div>
 

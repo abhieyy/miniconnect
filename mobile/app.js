@@ -220,8 +220,14 @@ class MiniConnectController {
         // Update UI
         this.elements.songTitle.textContent = this.state.title || 'No song playing';
         this.elements.artistName.textContent = this.state.artist || 'Unknown artist';
-        this.elements.volumeSlider.value = this.state.volume;
-        this.elements.volumeValue.textContent = this.state.volume + '%';
+        
+        // Update volume slider with proper visual feedback
+        if (this.state.volume !== undefined) {
+            this.elements.volumeSlider.value = this.state.volume;
+            this.elements.volumeValue.textContent = this.state.volume + '%';
+            // Update visual fill for the slider
+            this.elements.volumeSlider.style.backgroundSize = (this.state.volume) + '% 100%';
+        }
 
         // Update playback status
         const statusText = this.state.isPlaying ? '▶ Playing' : '⏸ Paused';
@@ -286,6 +292,11 @@ class MiniConnectController {
     setVolume(value) {
         this.state.volume = parseInt(value);
         this.elements.volumeValue.textContent = value + '%';
+        
+        // Update visual fill for slider
+        this.elements.volumeSlider.value = value;
+        this.elements.volumeSlider.style.backgroundSize = (value) + '% 100%';
+        this.elements.volumeSlider.style.setProperty('--value', value + '%');
 
         if (!this.isConnected) return;
 
@@ -335,6 +346,14 @@ class MiniConnectController {
         }
         console.log('[MiniConnect] Requesting playlists from server...');
         this.socket.emit('get-playlists');
+        
+        // Retry if no playlists received after 2 seconds
+        setTimeout(() => {
+            if (this.elements.playlistSelect.options.length <= 1 && this.isConnected) {
+                console.log('[MiniConnect] No playlists yet, retrying...');
+                this.socket.emit('get-playlists');
+            }
+        }, 2000);
     }
 
     playSelectedPlaylist() {
@@ -359,23 +378,43 @@ class MiniConnectController {
     }
 
     updatePlaylistOptions(playlists) {
+        // Filter out duplicates and songs
+        const seenNames = new Set();
+        const uniquePlaylists = [];
+        
+        if (playlists && Array.isArray(playlists)) {
+            for (const playlist of playlists) {
+                // Skip songs (they have video IDs)
+                if (playlist.id && playlist.id.includes('&v=')) {
+                    console.log('  Skipped (song):', playlist.name);
+                    continue;
+                }
+                
+                // Skip duplicates
+                if (!seenNames.has(playlist.name)) {
+                    uniquePlaylists.push(playlist);
+                    seenNames.add(playlist.name);
+                }
+            }
+        }
+        
         // Clear existing options (except the first one)
         while (this.elements.playlistSelect.options.length > 1) {
             this.elements.playlistSelect.remove(1);
         }
 
         // Add new playlist options
-        if (playlists && Array.isArray(playlists) && playlists.length > 0) {
-            console.log('[MiniConnect] Adding', playlists.length, 'playlists to dropdown');
-            for (const playlist of playlists) {
+        if (uniquePlaylists.length > 0) {
+            console.log('[MiniConnect] Adding', uniquePlaylists.length, 'playlists to dropdown');
+            for (const playlist of uniquePlaylists) {
                 const option = document.createElement('option');
                 option.value = playlist.id || playlist.name;
                 option.textContent = playlist.name;
                 this.elements.playlistSelect.appendChild(option);
-                console.log('  Added playlist:', playlist.name);
+                console.log('  ✓ Added playlist:', playlist.name);
             }
         } else {
-            console.warn('[MiniConnect] No playlists received or array is empty');
+            console.warn('[MiniConnect] No playlists received or all were duplicates/songs');
         }
     }
 

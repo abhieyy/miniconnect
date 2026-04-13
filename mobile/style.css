@@ -389,6 +389,13 @@ body {
     appearance: none;
     outline: none;
     cursor: pointer;
+    background: linear-gradient(to right, 
+        #1DB954 0%, 
+        #1ed760 var(--value, 0%), 
+        rgba(255, 255, 255, 0.1) var(--value, 0%), 
+        rgba(255, 255, 255, 0.1) 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 .volume-slider::-webkit-slider-thumb {

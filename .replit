@@ -1,1 +1,1 @@
-run = "npm --prefix server start"
+run = "bash start.sh"
